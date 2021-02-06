@@ -305,10 +305,10 @@ class FactoryManager(object):
         
         self.item_name_list = list(self.recipe_manager.all_items)
         self.recipe_name_list = list(self.factory_dictionary.keys())
-        print('recipes_without_matching_item_name:')
-        pprint([i for i in self.item_name_list if not i in self.recipe_name_list])
-        print('items_without_matching_recipe_name:')
-        pprint([i for i in self.recipe_name_list if not i in self.item_name_list])
+        #print('recipes_without_matching_item_name:')
+        #pprint([i for i in self.item_name_list if not i in self.recipe_name_list])
+        #print('items_without_matching_recipe_name:')
+        #pprint([i for i in self.recipe_name_list if not i in self.item_name_list])
         self.raw_item_name_list = self.recipe_manager.raw_items
         
         debug = 0
@@ -463,14 +463,14 @@ def calculate(to_do, input_type, default_module='productivity-module-3', default
             del num_assemblers_dictionary[recipe_name]
     num_assemblers_dict = {}
     print('-'*80)
-    n_or_r = 'Production rate' if input_type == 'rate' else 'Number of assemblers'
+    n_or_r = 'Production rate (1/s)' if input_type == 'rate' else 'Number of assemblers'
     print('Request ('+n_or_r.lower()+'):')
     pprint(to_do_raw_request)
     print('')
     print('Numbers of assemblers:')
     pprint(num_assemblers_dictionary)
     print('')
-    print('Rates:')
+    print('Rates (1/s):')
     pprint(rate_dictionary)
     print('')
     if negative_assemblers:
@@ -527,7 +527,7 @@ def prompt():
             break
             
         i_or_r = 'Item' if input_type == 'rate' else 'Recipe'
-        n_or_r = 'Production rate' if input_type == 'rate' else 'Number of assemblers'
+        n_or_r = 'Production rate (1/s)' if input_type == 'rate' else 'Number of assemblers'
 
         # Get item or recipe names and numbers.
         need_name = True

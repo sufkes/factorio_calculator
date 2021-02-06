@@ -29,7 +29,6 @@ def getRawRecipes(game_dir='F:\\Tower Program Files\\Program Files (x86)\\SteamL
         with open(recipe_json_path, 'r') as json_file:
             recipe_list = json.load(json_file)
 
-    
     raw_recipes.extend(recipe_list)
     for recipe in recipe_list:
 
@@ -52,21 +51,33 @@ def getProductivityModuleLimitation(game_dir='F:\\Tower Program Files\\Program F
     module_dir = os.path.join(game_dir, 'data\\base\\prototypes')
     module_file_name = 'item.lua'
     
-    module_path = os.path.join(module_dir, module_file_name)
+    module_lua_path = os.path.join(module_dir, module_file_name)
+    # with open(module_path, 'r') as f:
+       # module_string = f.read()
+    module_json_path = 'productivity_module_limitation_list.json'
     
-    with open(module_path, 'r') as f:
-        module_string = f.read()
-    
-    productivity_module_limitations = module_string.split('function productivity_module_limitation')[1]
-    productivity_module_limitations = productivity_module_limitations.split('return')[1].split('end')[0]
-    productivity_module_limitations = productivity_module_limitations.replace('{', '[').replace('}', ']')
-    productivity_module_limitations = json.loads(productivity_module_limitations)
+    if update_from_game_files:
+        with open(module_lua_path, 'r') as lua_file:
+            module_string = lua_file.read()
+            productivity_module_limitations = module_string.split('function productivity_module_limitation')[1]
+            productivity_module_limitations = productivity_module_limitations.split('return')[1].split('end')[0]
+            productivity_module_limitations = productivity_module_limitations.replace('{', '[').replace('}', ']')
+            productivity_module_limitations = json.loads(productivity_module_limitations) # use loads to convert JSON string to Python object?
+            
+            # Save the local copy as JSON.
+            with open(module_json_path, 'w') as json_file:
+                json.dump(productivity_module_limitations, json_file)
+    else:
+        with open(module_json_path, 'r') as json_file:
+            productivity_module_limitations = json.load(json_file) # use loads to read JSON file to Python object?
+
     
     return productivity_module_limitations
     
 
 if __name__ == '__main__':
-    raw_recipes = getRawRecipes(update_from_file=True)
+    raw_recipes = getRawRecipes(update_from_game_files=True)
     raw_recipes = getRawRecipes()
-    print(raw_recipes)
+    # print(raw_recipes)
+    productivity_module_limitation = getProductivityModuleLimitation(update_from_game_files=True)
     productivity_module_limitation = getProductivityModuleLimitation()
